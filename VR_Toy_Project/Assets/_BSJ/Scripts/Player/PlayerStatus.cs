@@ -195,9 +195,18 @@ public class PlayerStatus : MonoBehaviour,IDamageable
         }
     }
 
+    // HSJ_ 231023
+    // 현재 Hp가 0보다 작아질떄 0으로 고정
     public void OnDamage(int damage)
     {
-        curHp -= damage;
-    }
+        if(curHp >= damage)
+        {
+            curHp -= damage;
+        }       
+        else
+        {
+            curHp = 0;
+        }       
+    }       // OnDamage()
 
 }

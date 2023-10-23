@@ -55,11 +55,16 @@ public class BossBombAttackPlayer : MonoBehaviour, IDamageable
     {
         if (other.CompareTag("Player"))
         {
+            // HSJ_ 231023
+            // 중복 트리거 체크 방지 위해서 최초 접촉시 Collider 꺼줌
+            // 추후 오브젝트 풀로 사용시 꺼내는 시점에서 켜주고, 끄는 시점에서 꺼주면 될듯함
+            this.GetComponent<SphereCollider>().enabled = false;
             ps = other.GetComponent<PlayerStatus>();
 
             //PlayerStatus의 OnDamage
-
+            
             isAttackedBullet = false;
+            ps.OnDamage(BossBombAttackPlayerAtt);
             Destroy(gameObject);
 
         }
@@ -71,14 +76,14 @@ public class BossBombAttackPlayer : MonoBehaviour, IDamageable
 
     private void OnDestroy()
     {
-        if (isAttackedBullet == true)
-        {
-            GameObject DieMotion = Instantiate(diedPrefab, transform.position, Quaternion.identity);
-        }
-        else
-        {
-            GameObject AttakMotion = Instantiate(diedPrefab, transform.position, Quaternion.identity);
-        }
+        //if (isAttackedBullet == true)
+        //{
+        //    GameObject DieMotion = Instantiate(diedPrefab, transform.position, Quaternion.identity);
+        //}
+        //else
+        //{
+        //    GameObject AttakMotion = Instantiate(diedPrefab, transform.position, Quaternion.identity);
+        //}
     }
 
 
