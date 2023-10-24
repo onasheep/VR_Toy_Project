@@ -39,7 +39,7 @@ public class GunLazerPointer : MonoBehaviour
     private void Update()
     {
         // Bullet과 UI 레이어 빼고 검출
-        int layerMask = ((1 << LayerMask.NameToLayer("Bullet")) | (1 << LayerMask.NameToLayer("UI")) | 1 << LayerMask.NameToLayer("DetectArea") | 1 << LayerMask.NameToLayer("Player"));
+        int layerMask = ((1 << LayerMask.NameToLayer("Bullet")) | (1 << LayerMask.NameToLayer("UI")) | 1 << LayerMask.NameToLayer("DetectArea") | 1 << LayerMask.NameToLayer("Player") | 1 << LayerMask.NameToLayer("TurretBullet"));
         layerMask = ~layerMask;
 
         if (isLeftHand)

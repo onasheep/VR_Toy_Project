@@ -1,4 +1,4 @@
-#define PC
+//#define PC
 #define Oculus
 //#define Vive
 

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class BossAttack : MonoBehaviour
 {
-    private GameObject boss;
+    private Boss boss;
     public BossManager bm;
     public GameObject player = default;
     public GameObject playerAttack = default;
@@ -16,7 +16,7 @@ public class BossAttack : MonoBehaviour
     private void Awake()
     {
         m = GetComponent<Monsters>();
-        boss = this.gameObject;
+        boss = GetComponent<Boss>();
 
     }
 
@@ -26,7 +26,8 @@ public class BossAttack : MonoBehaviour
         Collider[] colliders = Physics.OverlapSphere(boss.transform.position, 100f, Turret);
 
         
-        if (bm.skillCoolTime > 3)
+
+        if (bm.skillCoolTime > 20f)
         {
             attack();
             bm.skillCoolTime = 0;
@@ -45,7 +46,7 @@ public class BossAttack : MonoBehaviour
         else if (GameManager.Instance.turretLv1_List.Count + GameManager.Instance.turretLv2_List.Count + GameManager.Instance.turretLv3_List.Count + GameManager.Instance.turretLv4_List.Count < 1)
         {
             skill = Random.Range(0, 2);
-            skill = 0;
+            skill = 1;
         }
 
 
@@ -55,7 +56,7 @@ public class BossAttack : MonoBehaviour
             Debug.LogFormat("플레이어공격 몇개? {0}", howmanyAttack);
             for (int i = 0; i < howmanyAttack; i++)
             {
-                GameObject atktoplayer = Instantiate(playerAttack, boss.transform.position, Quaternion.identity);
+                GameObject atktoplayer = Instantiate(playerAttack,new Vector3(boss.transform.position.x, boss.transform.position.y+2f, boss.transform.position.z),Quaternion.identity);
             }
 
         }
@@ -67,7 +68,7 @@ public class BossAttack : MonoBehaviour
             {
 
                 Debug.LogFormat("몬스터소환 몇개? {0}", howmanyAttack);
-                GameObject spawnmon = Instantiate(monsterAttack, new Vector3(boss.transform.position.x,5, boss.transform.position.z), Quaternion.identity);
+                GameObject spawnmon = Instantiate(monsterAttack, new Vector3(boss.transform.position.x, boss.transform.position.y + 2f, boss.transform.position.z), Quaternion.identity);
             }
         }
 
@@ -77,7 +78,7 @@ public class BossAttack : MonoBehaviour
             for (int i = 0; i < howmanyAttack; i++)
             {
                 Debug.LogFormat("타워공격 몇개? {0}", howmanyAttack);
-                GameObject atktotower = Instantiate(TowerAttack, boss.transform.position, Quaternion.identity);
+                GameObject atktotower = Instantiate(TowerAttack, new Vector3(boss.transform.position.x, boss.transform.position.y + 2f, boss.transform.position.z), Quaternion.identity);
             }
         }
     }

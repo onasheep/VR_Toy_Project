@@ -5528,7 +5528,7 @@ MonoBehaviour:
   detectionRadius: 100
   isFindTurret: 0
   isAttackTurret: 0
-  moveSpeed: 3
+  moveSpeed: 2
   AttackSpeed: 0
   hp: 0
   dmg: 0
@@ -5557,8 +5557,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2, y: 1.7, z: 4}
-  m_Center: {x: 0, y: 0.7, z: -0.45}
+  m_Size: {x: 3, y: 2, z: 6}
+  m_Center: {x: 0, y: 1, z: -2.3}
 --- !u!1 &5585716154182073396
 GameObject:
   m_ObjectHideFlags: 0

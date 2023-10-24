@@ -1,13 +1,14 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Boss : MonoBehaviour, IDamageable
 {
-    public GameObject boss = default;
     public GameObject player = default;
     public GameObject[] Turret = default;
     public GameObject bossDiePrefab = default;
     private GameObject bossDie = default;
+    private Animator ba = default;
     // 터렛을 타겟중인지 체크
     public bool isFindTurret = false;
     // 터렛을 공격중인지 체크
@@ -24,7 +25,6 @@ public class Boss : MonoBehaviour, IDamageable
     // 몇개가 활성화 되어있는지 체크
     public int weakActiveCount = 0;
 
-    private Rigidbody rb;
 
     // HSJ_ 231019
     // 프로퍼티로 변경
@@ -33,7 +33,6 @@ public class Boss : MonoBehaviour, IDamageable
     public int CurHP { get; private set; }
     private int lastGoldHP = default;
     // { GameManger에서 가져가서 사용할 변수
-    private float BossAtk;
 
     void Start()
     {
@@ -42,15 +41,20 @@ public class Boss : MonoBehaviour, IDamageable
         lastGoldHP = MaxHp;
         CurHP = MaxHp;
 
-        StartCoroutine(_BossMove());
+        StartCoroutine(BossMove());
 
         // 약점 프리팹 모두 비활성화
         m = GetComponent<Monsters>();
+
+        SkinnedMeshRenderer skin = GetComponentInChildren<SkinnedMeshRenderer>();
+        skin.BakeMesh(GetComponent<MeshFilter>().mesh);
+
+        ba = GetComponent<Animator>();
     }
 
-    private IEnumerator _BossMove()
+    private IEnumerator BossMove()
     {
-        Vector3 startLocation = boss.transform.position;
+        Vector3 startLocation = transform.position;
         Vector3 targetLocation = player.transform.position;
 
         float yPosition = startLocation.y;
@@ -71,14 +75,14 @@ public class Boss : MonoBehaviour, IDamageable
             currentTime += Time.deltaTime;
             elapsedRate = currentTime / finishTime;
             // TEST : * 5f
-            boss.transform.position = Vector3.Lerp(startLocation, targetLocation, elapsedRate * 5f);
+            transform.position = Vector3.Lerp(startLocation, targetLocation, elapsedRate * 5f);
             // Y 위치를 고정
             Vector3 newPosition = new Vector3(
                 Mathf.Lerp(startLocation.x, targetLocation.x, elapsedRate),
                 yPosition, // 고정된 Y 위치
                 Mathf.Lerp(startLocation.z, targetLocation.z, elapsedRate)
             );
-            boss.transform.position = newPosition;
+            transform.position = newPosition;
             yield return null;
         }
 
@@ -86,9 +90,9 @@ public class Boss : MonoBehaviour, IDamageable
 
     private void Update()
     {
-        if (CurHP <= 0)
+        if (Input.GetKeyDown(KeyCode.X))
         {
-
+            OnDamage(500000);
         }
 
 
@@ -105,14 +109,37 @@ public class Boss : MonoBehaviour, IDamageable
 
     public void OnDamage(int damage)
     {
+        if(isDead == true) { return; }
+
         CurHP -= damage;
         CalculateHp();
 
-        if (CurHP <= 0 || Input.GetKeyDown(KeyCode.X))
+        if (CurHP <= 0)
         {
+            isDead = true;
+            ba.SetTrigger("Dead");
             bossDie = Instantiate(bossDiePrefab, transform.position, Quaternion.identity);
-            Destroy(gameObject);
 
+
+            
+            StartCoroutine(Dead());
+
+            if (transform.localScale.x < 0 && transform.localScale.y < 0 && transform.localScale.z < 0)
+            {
+
+                Destroy(gameObject);
+            }
+
+        }
+    }
+
+    IEnumerator Dead()
+    {
+        while (transform.localScale.x > 0 || transform.localScale.y > 0 || transform.localScale.z > 0)
+        {
+            Debug.Log(transform.localScale);
+            transform.localScale -= new Vector3(0.02f, 0.02f, 0.02f);
+            yield return new WaitForSeconds(0.01f);
         }
     }
 

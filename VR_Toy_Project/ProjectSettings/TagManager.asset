@@ -14,6 +14,7 @@ TagManager:
   - BossAttackTurret
   - Boss
   - DetectArea
+  - BigWeakPoint
   layers:
   - Default
   - TransparentFX

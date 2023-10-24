@@ -29,13 +29,13 @@ public class PlaceUnit : MonoBehaviour
         // 시작할 때 비활성화
         placeUnitUI[0].gameObject.SetActive(false);
         placeUnitUI[1].gameObject.SetActive(false);
-        //placeUnitUI[2].gameObject.SetActive(false);
-        //placeUnitUI[3].gameObject.SetActive(false);
+        placeUnitUI[2].gameObject.SetActive(false);
+        placeUnitUI[3].gameObject.SetActive(false);
 
-        // Material Color값 가져오기
-        canPlace = placeMaterial.color;
-        // 설정된 Color값 넣기
-        cantPlace = new Color(255, canPlace.g, canPlace.b, canPlace.a);
+        // 설정한 Color값
+        canPlace = new Color(191 / 255f, 191 / 255f, 191 / 255f, 127 / 255f);
+        // 설정한 Color값
+        cantPlace = new Color(1.0f, 127 / 255f, 127 / 255f, 127 / 255f);
 
         // 라인 렌더러 컴포넌트 얻어오기
         lineRenderer = GetComponent<LineRenderer>();
@@ -69,8 +69,8 @@ public class PlaceUnit : MonoBehaviour
             // 라인 렌더러 컴포넌트 비활성화
             lineRenderer.enabled = false;
 
-            // 재화가 충분한지 체크
-            if (GameManager.Instance.Gold >= JsonData.Instance.unitDatas.Unit[turretID].Cost)
+            // 재화가 충분한지 체크, 배치 가능한 장소인지 체크
+            if (GameManager.Instance.Gold >= JsonData.Instance.unitDatas.Unit[turretID].Cost && isPlacable == true)
             {
                 // 설치 가능
                 SetUIEnable();
@@ -100,7 +100,7 @@ public class PlaceUnit : MonoBehaviour
             playerStatus.ModeSwap();
         }
 
-        // 왼쪽 컨트롤러를 기준으로 Ray를 만든다
+        // 오른쪽 컨트롤러를 기준으로 Ray를 만든다
         Ray ray_ = new Ray(BSJVRInput.RHandPosition, BSJVRInput.RHandDirection);
         RaycastHit hitInfo_ = default;
         int layer_ = 1 << LayerMask.NameToLayer("Terrain");
@@ -142,8 +142,8 @@ public class PlaceUnit : MonoBehaviour
             lineRenderer.SetPosition(0, ray_.origin);
             lineRenderer.SetPosition(1, ray_.origin + BSJVRInput.RHandDirection * 200f);
 
-            // 유닛 배치 UI의 좌표 맵 아래로 이동
-            placeUnitUI[turretID].transform.position = Vector3.up * -100;
+            // 유닛 배치 UI를 맵 아래의 지정된 좌표로 이동
+            placeUnitUI[turretID].transform.position = Vector3.right * 1.2f * turretID + Vector3.up * -100;
         }
     }       // Update()
 

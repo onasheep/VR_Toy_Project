@@ -5,11 +5,10 @@ using UnityEngine;
 public class MonsterSpawner : MonoBehaviour
 {
     private GameObject _monsterSpawner = default;
-    public GameObject boss = default;
     public GameObject Monsterlv1 = default;
     public GameObject Monsterlv2 = default;
     public GameObject Monsterlv3 = default;
-
+    private Boss boss = default;
     // 스폰 포인트
     public GameObject spawnPoint01;
     public GameObject spawnPoint02;
@@ -38,8 +37,8 @@ public class MonsterSpawner : MonoBehaviour
 
     private void Update()
     {
-        
-        if(BossManager.instance.spawn > spawnTime)
+        boss = GetComponentInParent<Boss>();
+        if(BossManager.instance.spawn > spawnTime && boss.CurHP >0)
         {
             CreateMonster();
             BossManager.instance.spawn = 0f;

@@ -5,15 +5,15 @@ using UnityEngine;
 public class WeakPointSmall : MonoBehaviour, IDamageable
 {
     public Boss boss;
-    private Material myMat;
+    private Renderer myMat;
     public Material weakOn;
     public Material weakOut;
-    private bool isLive = false;
+    public bool isLive = true;
 
 
     public void Start()
     {
-        myMat = GetComponent<Material>();
+        myMat = GetComponent<Renderer>();
     }
 
 
@@ -21,25 +21,21 @@ public class WeakPointSmall : MonoBehaviour, IDamageable
     {
         if (isLive == true)
         {
-            myMat = weakOut;
+            myMat.material = weakOn;
         }
         else
         {
-            myMat = weakOn;
+            myMat.material = weakOut;
         }
     }
 
     public void OnDamage(int damage)
     {
-        if (myMat == weakOn)
-        {
-            boss.OnDamage((int)(damage * 2f));
-            StartCoroutine(ActiveWeakpoint());
-        }
-        else if (myMat == weakOut)
-        {
-
             boss.OnDamage(damage);
+
+        if (isLive == true)
+        {
+            StartCoroutine(ActiveWeakpoint());
         }
     }
 

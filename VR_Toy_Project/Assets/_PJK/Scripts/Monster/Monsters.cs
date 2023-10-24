@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.TextCore.Text;
+using System.Threading;
 
 public class Monsters : MonoBehaviour, IDamageable
 {
@@ -80,6 +81,9 @@ public class Monsters : MonoBehaviour, IDamageable
     // 컴포넌트들
     private Rigidbody rb; // 괴수의 Rigidbody를 사용하여 이동 처리
     private BoxCollider boxCollider;
+
+    // 공격 타이머
+    private float attackTimer = 0f;
 
     public int Lv1hp { get; private set; }
     public int Lv1atk { get; private set; }
@@ -189,9 +193,17 @@ public class Monsters : MonoBehaviour, IDamageable
             // 터렛을 공격 중이라면
             else if (isAttackTurret == true)
             {
-                // 자폭 공격
-                rb.velocity = Vector3.zero;
-                AttackTurret(dmg);
+                // 공격 타이머
+                attackTimer += Time.deltaTime;
+                
+                // 공격 속도에 타이머가 도달하였다면.
+                if(attackTimer > AttackSpeed)
+                {
+                    // 터렛 공격
+                    rb.velocity = Vector3.zero;
+                    AttackTurret(dmg);
+                    attackTimer = 0f;
+                }
             }
         }
     }
@@ -240,6 +252,7 @@ public class Monsters : MonoBehaviour, IDamageable
     {
         if (turretUnit == null) { return; }
 
+        Debug.Log("공격함");
         rb.velocity = Vector3.zero;
         anim.SetBool("isAttackturret", true);
         turretUnit.DamageSelf(damage);
@@ -271,6 +284,12 @@ public class Monsters : MonoBehaviour, IDamageable
             // HSJ_ 231019
             GameManager.Instance.GetGold_Monster();
 
+            // 상태 초기화
+            turretUnit = null;
+            target = GameObject.Find("Player");
+            isFindTurret = false;
+            isAttackTurret = false;
+
             // 몬스터 사망 시 이펙트 생성. BSJ_231020
             GameObject deathEffect = VFXObjectPool.instance.GetPoolObj(VFXPoolObjType.MonsterDeathVFX);
             deathEffect.SetActive(true);
@@ -282,8 +301,12 @@ public class Monsters : MonoBehaviour, IDamageable
             deathBomb.transform.position = transform.position;
             deathBomb.GetComponent<MonsterDeathBomb>()._Damage = bombdmg * 100f;    // 100f는 테스트 용 데미지 업 _BSJ
 
+            // 색상 원래대로 변경
+            meshRender.material.color = Color.white;
+
             // 몬스터 사망
             MonsterObjectPool.instance.CoolObj(gameObject, monsterType);
+
             // LEGACY: 오브젝트 풀로 반환하기로 하였음. BSJ_231023
             // Destroy(gameObject);
             // LEGACY: 죽으면 이펙트 생성 후 바로 Destroy 처리하기로 했음. BSJ_231020
@@ -305,6 +328,9 @@ public class Monsters : MonoBehaviour, IDamageable
     //! 몬스터 셋팅하는 함수
     public void SetMonsterStat()
     {
+        // 공격 타이머
+        attackTimer = 0f;
+
         // 처음 타겟은 플레이어
         target = GameObject.Find("Player");
 
@@ -329,18 +355,21 @@ public class Monsters : MonoBehaviour, IDamageable
             hp = Lv1hp;
             dmg = Lv1atk;
             bombdmg = Lv1BombDmg;
+            AttackSpeed = Lv1atkspeed;
         }
         else if (BossManager.instance.gametime > 300f && BossManager.instance.gametime < 600f)
         {
             hp = Lv2hp;
             dmg = Lv2atk;
             bombdmg = Lv2BombDmg;
+            AttackSpeed = Lv2atkspeed;
         }
         else if (BossManager.instance.gametime > 600f)
         {
             hp = Lv3hp;
             dmg = Lv3atk;
             bombdmg = Lv3BombDmg;
+            AttackSpeed = Lv3atkspeed;
         }
         // } 몬스터 초기값 셋팅
     }

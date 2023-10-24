@@ -53,7 +53,6 @@ public class BossBombSpawnMon : MonoBehaviour, IDamageable
         RandomTarget = new Vector3(targetx, 0, targetz);
         StartCoroutine(Firsttime());
 
-
     }
 
     private void Update()
@@ -69,6 +68,8 @@ public class BossBombSpawnMon : MonoBehaviour, IDamageable
         {
             Destroy(gameObject);
         }
+
+
     }
 
 
@@ -76,9 +77,9 @@ public class BossBombSpawnMon : MonoBehaviour, IDamageable
     {
         randomX = Random.Range(-10, 10);
         rb.useGravity = false;
-        Vector3 velocity = new(randomX, 10, 0);
+        Vector3 velocity = new(randomX, 5, 0);
         rb.velocity = velocity;
-        
+
         yield return new WaitForSeconds(1.5f);
         rb.velocity = Vector3.zero;
 

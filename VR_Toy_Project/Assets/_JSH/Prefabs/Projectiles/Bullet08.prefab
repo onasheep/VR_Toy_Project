@@ -4917,7 +4917,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9228f1a3e50f8c43b024cf1a8a03c24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletType: 0
+  bulletType: 1207
   bulletReturnTime: 10
   startTime: 0
 --- !u!54 &9204571764897887917

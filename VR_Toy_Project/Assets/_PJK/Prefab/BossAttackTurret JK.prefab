@@ -64,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 680e8f7dbaa0c1049b4a42b81f6976cc, type: 2}
+  - {fileID: 2100000, guid: dd0680ab6b4aefe42a240fc95712bda5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -112,8 +112,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BossBombAttackHp: 0
+  BossBombAttackDmg: 0
   initialAngle: 30
-  target: {fileID: 0}
+  targetPos: {x: 0, y: 0, z: 0}
 --- !u!54 &5901093104146976810
 Rigidbody:
   m_ObjectHideFlags: 0

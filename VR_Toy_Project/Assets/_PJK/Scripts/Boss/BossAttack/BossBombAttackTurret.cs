@@ -2,6 +2,8 @@ using System.Collections;
 using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
+
 public class BossBombAttackTurret : MonoBehaviour, IDamageable
 {
     // 공격 포탄 Hp
@@ -64,14 +66,11 @@ public class BossBombAttackTurret : MonoBehaviour, IDamageable
                 }
             }
         }
-
     }
 
 
     private void Start()
     {
-        bm = GameObject.Find("BossManager").GetComponent<BossManager>();
-
         StartCoroutine(Firsttime());
     }
 
@@ -98,7 +97,7 @@ public class BossBombAttackTurret : MonoBehaviour, IDamageable
     {
         randomX = Random.Range(-10, 10);
         rb.useGravity = false;
-        Vector3 velocity = new Vector3(randomX, 10, 0);
+        Vector3 velocity = new Vector3(randomX, 5, 0);
         rb.velocity = velocity;
 
         yield return new WaitForSeconds(1.5f);

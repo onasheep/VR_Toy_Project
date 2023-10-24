@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using TMPro;
+using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
@@ -41,7 +39,7 @@ public class Bullet : MonoBehaviour
         {
             vfxType = VFXPoolObjType.Bullet01_HitVFX;
             textType = TextPoolObjType.DamageText01;
-            bulletSpeed = JsonData.Instance.bulletDatas.Bullet[0].Bullet_Speed / 5;
+            bulletSpeed = JsonData.Instance.bulletDatas.Bullet[0].Bullet_Speed;
             bulletDamage = JsonData.Instance.bulletDatas.Bullet[0].Att;
             criticalPercent = JsonData.Instance.bulletDatas.Bullet[0].Cri_Chance;
             criticalDamage = JsonData.Instance.bulletDatas.Bullet[0].Cri_Damege;
@@ -50,7 +48,7 @@ public class Bullet : MonoBehaviour
         {
             vfxType = VFXPoolObjType.Bullet02_HitVFX;
             textType = TextPoolObjType.DamageText01;
-            bulletSpeed = JsonData.Instance.bulletDatas.Bullet[1].Bullet_Speed / 5;
+            bulletSpeed = JsonData.Instance.bulletDatas.Bullet[1].Bullet_Speed;
             bulletDamage = JsonData.Instance.bulletDatas.Bullet[1].Att;
             criticalPercent = JsonData.Instance.bulletDatas.Bullet[1].Cri_Chance;
             criticalDamage = JsonData.Instance.bulletDatas.Bullet[1].Cri_Damege;
@@ -59,7 +57,7 @@ public class Bullet : MonoBehaviour
         {
             vfxType = VFXPoolObjType.Bullet03_HitVFX;
             textType = TextPoolObjType.DamageText01;
-            bulletSpeed = JsonData.Instance.bulletDatas.Bullet[2].Bullet_Speed / 5;
+            bulletSpeed = JsonData.Instance.bulletDatas.Bullet[2].Bullet_Speed;
             bulletDamage = JsonData.Instance.bulletDatas.Bullet[2].Att;
             criticalPercent = JsonData.Instance.bulletDatas.Bullet[2].Cri_Chance;
             criticalDamage = JsonData.Instance.bulletDatas.Bullet[2].Cri_Damege;
@@ -68,7 +66,7 @@ public class Bullet : MonoBehaviour
         {
             vfxType = VFXPoolObjType.Bullet04_HitVFX;
             textType = TextPoolObjType.DamageText01;
-            bulletSpeed = JsonData.Instance.bulletDatas.Bullet[3].Bullet_Speed / 5;
+            bulletSpeed = JsonData.Instance.bulletDatas.Bullet[3].Bullet_Speed;
             bulletDamage = JsonData.Instance.bulletDatas.Bullet[3].Att;
             criticalPercent = JsonData.Instance.bulletDatas.Bullet[3].Cri_Chance;
             criticalDamage = JsonData.Instance.bulletDatas.Bullet[3].Cri_Damege;
@@ -77,7 +75,7 @@ public class Bullet : MonoBehaviour
         {
             vfxType = VFXPoolObjType.Bullet05_HitVFX;
             textType = TextPoolObjType.DamageText01;
-            bulletSpeed = JsonData.Instance.bulletDatas.Bullet[4].Bullet_Speed / 5;
+            bulletSpeed = JsonData.Instance.bulletDatas.Bullet[4].Bullet_Speed;
             bulletDamage = JsonData.Instance.bulletDatas.Bullet[4].Att;
             criticalPercent = JsonData.Instance.bulletDatas.Bullet[4].Cri_Chance;
             criticalDamage = JsonData.Instance.bulletDatas.Bullet[4].Cri_Damege;
@@ -117,7 +115,7 @@ public class Bullet : MonoBehaviour
         // 치명타 확률 계산하여 치명타 데미지 계산
         float _critCheck = Random.Range(0.0f, 1.0f);
 
-        if(_critCheck < criticalPercent) 
+        if (_critCheck < criticalPercent)
         {
             finalDamage = (int)(bulletDamage * criticalDamage);
         }
@@ -136,7 +134,7 @@ public class Bullet : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         // 약점 || 졸개 || 보스 공격 투사체 || 보스 스폰 알
-        if (other.CompareTag("WeakPoint") || other.CompareTag("Monster") || other.CompareTag("BossAttackPlayer") || other.CompareTag("BossAttackSpawnMon") || other.CompareTag("Boss"))
+        if (other.CompareTag("BigWeakPoint") || other.CompareTag("WeakPoint") || other.CompareTag("Monster") || other.CompareTag("BossAttackPlayer") || other.CompareTag("BossAttackSpawnMon") || other.CompareTag("Boss"))
         {
             // 타격 이펙트 콜
             GameObject hitVFX = VFXObjectPool.instance.GetPoolObj(vfxType);
@@ -144,41 +142,69 @@ public class Bullet : MonoBehaviour
             // LEGACY : 
             //hitVFX.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z - 1f);
             hitVFX.transform.position = other.ClosestPointOnBounds(this.transform.position - new Vector3(0f, 0f, 5f));
+            
+            // JSH: Bullet08일 때만 스플래시 실행
+            if (bulletType == PoolObjType.Bullet08)
+            {
+                Splash();
+            }
+            // 나머지는 부딪힌 것에만 데미지
+            else
+            {
+                if (other.CompareTag("BigWeakPoint"))
+                {
+                    bool isLive = other.GetComponent<WeakPointBig>().isLive;
+                    if (isLive == true)
+                    {
 
-            // { 실제 데미지를 입히는 로직
-            // 큰 약점
-            //if (other.CompareTag("BigWeakPoint"))
-            //{
-            //    finalDamage = ((int)(bulletDamage * criticalDamage) * 2);
+                        finalDamage = (int)(bulletDamage * criticalDamage * 1.3f);
+                    }
+                    else
+                    {
+                        finalDamage = (int)(bulletDamage * criticalDamage);
+                    }
+                    other.GetComponent<WeakPointBig>().OnDamage(finalDamage);
+                }
+                
+                else if (other.CompareTag("WeakPoint"))
+                {
+                    bool isLive = other.GetComponent<WeakPointSmall>().isLive;
+                    if (isLive == true)
+                    {
+                        finalDamage = (int)(bulletDamage * criticalDamage * 2f);
+                    }
+                    else
+                    {
+                        finalDamage = (int)(bulletDamage * criticalDamage);
+                    }
 
-            //    // TODO: 약점에 접근해서 isLive가 true인지 false인지 확인해서 데미지를 다르게 표시한다.
-
-            //    other.GetComponent<WeakPoint>().OnDamage(finalDamage);
-            //}
-            if (other.CompareTag("WeakPoint"))
-            {
-                finalDamage = (int)(bulletDamage * criticalDamage);
-                other.GetComponent<WeakPointBig>().OnDamage(finalDamage);
-            }
-            else if (other.CompareTag("Monster"))
-            {
-                other.GetComponent<Monsters>().OnDamage(finalDamage);
-            }
-            else if (other.CompareTag("BossAttackPlayer"))
-            {
-                other.GetComponent<BossBombAttackPlayer>().OnDamage(finalDamage);
-            }
-            else if (other.CompareTag("BossAttackTurret"))
-            {
-                other.GetComponent<BossBombAttackTurret>().OnDamage(finalDamage);
-            }
-            else if (other.CompareTag("BossAttackSpawnMon"))
-            {
-                other.GetComponent<BossBombSpawnMon>().OnDamage(finalDamage);
-            }
-            else if (other.CompareTag("Boss"))
-            {
-                other.GetComponent<Boss>().OnDamage(finalDamage);
+                    other.GetComponent<WeakPointSmall>().OnDamage(finalDamage);
+                }
+                
+                else if (other.CompareTag("Monster"))
+                {
+                    other.GetComponent<Monsters>().OnDamage(finalDamage);
+                }
+                
+                else if (other.CompareTag("BossAttackPlayer"))
+                {
+                    other.GetComponent<BossBombAttackPlayer>().OnDamage(finalDamage);
+                }
+                
+                else if (other.CompareTag("BossAttackTurret"))
+                {
+                    other.GetComponent<BossBombAttackTurret>().OnDamage(finalDamage);
+                }
+                
+                else if (other.CompareTag("BossAttackSpawnMon"))
+                {
+                    other.GetComponent<BossBombSpawnMon>().OnDamage(finalDamage);
+                }
+                
+                else if (other.CompareTag("Boss"))
+                {
+                    other.attachedRigidbody.GetComponent<Boss>().OnDamage(finalDamage);
+                }
             }
             // } 실제 데미지를 입히는 로직
 
@@ -187,7 +213,7 @@ public class Bullet : MonoBehaviour
 
             // 총알 데미지 텍스트 변경
             damageText.GetComponentInChildren<TextMeshProUGUI>().text = string.Format("{0}", finalDamage);
-            
+
             damageText.SetActive(true);
             damageText.transform.position = new Vector3(transform.position.x + Random.Range(-0.25f, 0.25f), transform.position.y + Random.Range(-0.25f, 0.25f), transform.position.z - 1f);
             // } 타격 데미지 텍스트 콜
@@ -222,5 +248,18 @@ public class Bullet : MonoBehaviour
 
         // 다른 곳에 맞으면,
         else { /*Do Nothing*/ }
+    }       // OnTriggerEnter()
+
+    //! 졸개에게 부딪힌 후 사용할 스플래시 공격 기능
+    private void Splash()
+    {
+        // 몬스터 레이어에 속한 오브젝트만 
+        Collider[] hitObjects_ = Physics.OverlapSphere(transform.position, 0.4f, 1 << LayerMask.NameToLayer("Monster"));
+
+        // 검출된 모든 오브젝트에 실행
+        foreach (Collider target_ in hitObjects_)
+        {
+            target_.GetComponent<Monsters>().OnDamage(finalDamage);
+        }
     }
 }

@@ -146,3 +146,4 @@ MonoBehaviour:
   initialAngle: 30
   detectionRadius: 1000
   diedPrefab: {fileID: 3946140628572098603, guid: 230d5948f7f21664b8286d5fc398b986, type: 3}
+  attakPrefab: {fileID: 3712707503665828137, guid: 1ff94f4e2b924004eb8dd1e85e3997c6, type: 3}

@@ -44,6 +44,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8802470701688589236}
   - component: {fileID: 3460652587866828295}
+  - component: {fileID: -6598653029894132443}
   m_Layer: 0
   m_Name: Effect_02_BlackHole
   m_TagString: Untagged
@@ -60,8 +61,8 @@ Transform:
   m_GameObject: {fileID: 1180268408184453300}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 7.5, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1165233061177094828}
   - {fileID: 2546469752489141099}
@@ -81,6 +82,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae012963c78299243be4132a7db04ae3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!135 &-6598653029894132443
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1180268408184453300}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1784417626578361363
 GameObject:
   m_ObjectHideFlags: 0

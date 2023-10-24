@@ -83,7 +83,7 @@ public class PlayerStatus : MonoBehaviour,IDamageable
     private void ClickButton()
     {
         // 왼쪽 컨트롤러를 기준으로 Ray를 만든다
-        Ray ray_ = new Ray(BSJVRInput.LHandPosition, BSJVRInput.LHandDirection);
+        Ray ray_ = new Ray(BSJVRInput.RHandPosition, BSJVRInput.RHandDirection);
         RaycastHit hitInfo_ = default;
         int layer_ = 1 << LayerMask.NameToLayer("Water");
 

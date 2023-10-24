@@ -107,7 +107,7 @@ public class TurretUnit : MonoBehaviour
         // 탐색한 목표를 저장
         target = hitObjects_[closest_].transform;
 
-        AttackTarget();
+        Invoke("AttackTarget", firing_Interval);
     }       // DetectTarget()
 
     //! 터렛의 공격 로직
@@ -118,7 +118,7 @@ public class TurretUnit : MonoBehaviour
         // 목표가 비활성화 상태라면 탐지 실행
         if (target.gameObject.activeSelf == false)
         {
-            DetectTarget();
+            Invoke("DetectTarget", firing_Interval);
             isReadyDetect = true;
             return;
         }
