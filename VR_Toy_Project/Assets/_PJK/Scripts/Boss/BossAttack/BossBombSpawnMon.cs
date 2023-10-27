@@ -44,8 +44,7 @@ public class BossBombSpawnMon : MonoBehaviour, IDamageable
         bossBombSpawnMonHp = JsonData.Instance.bossSkillDatas.Boss_Skill[2].Hp;
 
         startx = bm.Startx;
-        endx = bm.Endx;
-        // HSJ_ 231023
+        endx = bm.Endx;        
         // { time 캐싱
         endTime = GameManager.Instance.EndTime;
         lv1Time = endTime * 0.3f;
@@ -131,7 +130,7 @@ public class BossBombSpawnMon : MonoBehaviour, IDamageable
 
 
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(3f);
 
         Destroy(attackeffect);
     }

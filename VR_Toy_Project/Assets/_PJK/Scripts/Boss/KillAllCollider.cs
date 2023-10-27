@@ -14,6 +14,5 @@ public class KillAllCollider : MonoBehaviour
             turret = other.gameObject;
             Destroy(turret);
         }
-
     }
 }

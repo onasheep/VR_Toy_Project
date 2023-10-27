@@ -246,7 +246,6 @@ public class Monsters : MonoBehaviour, IDamageable
     {
         if (turretUnit == null) { return; }
 
-        Debug.Log("공격함");
         rb.velocity = Vector3.zero;
         anim.SetBool("isAttackturret", true);
         turretUnit.DamageSelf(damage);

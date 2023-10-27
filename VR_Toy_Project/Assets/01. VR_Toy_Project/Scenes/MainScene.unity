@@ -17539,6 +17539,10 @@ PrefabInstance:
       propertyPath: crosshairCan
       value: 
       objectReference: {fileID: 1397957300}
+    - target: {fileID: 5701574740706734734, guid: c35709c98aae9294ba666fa0cc3116da, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5758266511854206194, guid: c35709c98aae9294ba666fa0cc3116da, type: 3}
       propertyPath: crosshairCan
       value: 

@@ -133,7 +133,6 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other.tag);
 
         // 약점 || 졸개 || 보스 공격 투사체 || 보스 스폰 알
         if (other.CompareTag("BigWeakPoint") || other.CompareTag("WeakPoint") || other.CompareTag("Monster") || other.CompareTag("BossAttackPlayer") || other.CompareTag("BossAttackSpawnMon") || other.CompareTag("BossAttackTurret") || other.CompareTag("Boss"))
@@ -195,7 +194,6 @@ public class Bullet : MonoBehaviour
                 
                 else if (other.CompareTag("BossAttackTurret"))
                 {
-                    Debug.Log("BossAttackTurret"+other.tag);
                     other.GetComponent<BossBombAttackTurret>().OnDamage(finalDamage);
                 }
                 

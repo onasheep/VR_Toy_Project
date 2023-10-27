@@ -116,8 +116,8 @@ public class BossBombAttackPlayer : MonoBehaviour, IDamageable
         rb.velocity = Vector3.zero;
 
         yield return new WaitForSeconds(3f);
-
         StartCoroutine(AttackEffect());
+
         rb.useGravity = true;
         //포물선 운동
         velocity = GetVelocity(transform.position, target.transform.position, initialAngle);
@@ -133,7 +133,7 @@ public class BossBombAttackPlayer : MonoBehaviour, IDamageable
 
 
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(3f);
 
         Destroy(attackeffect);
     }

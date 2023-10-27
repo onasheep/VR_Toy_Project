@@ -184,8 +184,7 @@ public class BossBombAttackTurret : MonoBehaviour, IDamageable
 
         rb.useGravity = true;
 
-        //Debug;
-        Debug.Log(targetPos);
+        
 
         // 포물선 운동
         velocity = GetVelocity(transform.position, targetPos, initialAngle);
@@ -199,7 +198,7 @@ public class BossBombAttackTurret : MonoBehaviour, IDamageable
 
 
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(3f);
 
         Destroy(attackeffect);
     }

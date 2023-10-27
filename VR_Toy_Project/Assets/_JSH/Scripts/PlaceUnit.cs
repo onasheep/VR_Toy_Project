@@ -239,6 +239,7 @@ public class PlaceUnit : MonoBehaviour
     private void SetUIDisable()
     {
         // 배치 불가능 상태로 설정
+        isCapable = false;
         isPlacable = false;
         placeMaterial.color = cantPlace;
         // 렌더들 받아오기

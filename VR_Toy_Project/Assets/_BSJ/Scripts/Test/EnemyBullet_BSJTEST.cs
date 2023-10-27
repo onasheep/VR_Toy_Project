@@ -14,7 +14,6 @@ public class EnemyBullet_BSJTEST : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other);
         if(other.CompareTag("Player"))
         {
             p_Stat = other.GetComponent<PlayerStatus>();

@@ -58,8 +58,7 @@ public class Boss : MonoBehaviour, IDamageable
 
         float yPosition = startLocation.y;
 
-        // HSJ_ 231023
-        // BossManager에 존재하는 타이머 중 일부를 지역변수로 변경
+        
         float elapsedRate = default;
         float currentTime = default;
 
@@ -73,7 +72,6 @@ public class Boss : MonoBehaviour, IDamageable
         {
             currentTime += Time.deltaTime;
             elapsedRate = currentTime / finishTime;
-            // TEST : * 5f
             transform.position = Vector3.Lerp(startLocation, targetLocation, elapsedRate * 5f);
             // Y 위치를 고정
             Vector3 newPosition = new Vector3(
@@ -83,17 +81,9 @@ public class Boss : MonoBehaviour, IDamageable
             );
             transform.position = newPosition;
             yield return null;
-        }
-
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            OnDamage(500000);
-        }
-
+        }       // loop : 플레이어에게 지정된 시간동안 다가옴
+        // 지정된 시간이 지나면 LoseGame() 호출
+        GameManager.Instance.LoseGame();
 
     }
 

@@ -26,7 +26,7 @@ public class BossManager : MonoBehaviour
         skillCoolTime += Time.deltaTime;
         Weaknesstime += Time.deltaTime;
         MonsterAttackTime += Time.deltaTime;
-        //Debug.Log(gametime);
+
     }
 
 
